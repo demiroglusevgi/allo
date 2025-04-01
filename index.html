@@ -44,7 +44,7 @@
         .allocation-box {
             display: inline-block;
             width: 200px;
-            height: 80px; /* Shorter height */
+            height: 80px;
             margin: 20px;
             padding: 10px;
             text-align: center;
@@ -57,6 +57,9 @@
             font-size: 20px;
             font-weight: bold;
         }
+        #score {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -64,13 +67,9 @@
     <h1>Random Allocation Game</h1>
     <p>Click "Roll the Dice" to reveal a color, then choose where to allocate the money.</p>
     
-    <!-- Roll Dice Button -->
     <button class="button" id="roll-dice">Roll the Dice</button>
-
-    <!-- Dice Result (Initially transparent with "50¢") -->
     <div class="dice" id="dice">50¢</div>
 
-    <!-- Allocation boxes -->
     <div id="huskies" class="allocation-box">
         <div class="box-title">Huskies in Stamford</div>
         <p>Click to allocate to Huskies</p>
@@ -81,43 +80,37 @@
         <p>Click to keep for yourself</p>
     </div>
 
-    <!-- Game result display -->
     <div class="result">
-        <p id="score">Your Score: 0</p>
-        <p id="rounds-left">Rounds Left: 30</p>
+        <p id="money-left">Money Left: $15.00</p>
+        <p id="score">Final Score: 0</p>
     </div>
 
     <script>
         let score = 0;
         let roundsLeft = 30;
-        let diceRolled = false; // Track if the dice has been rolled
+        let moneyLeft = 15.00;
+        let diceRolled = false;
 
-        // Function to roll the dice (random orange or yellow)
         function rollDice() {
             return Math.random() < 0.5 ? 'orange' : 'yellow';
         }
 
-        // Function to update the game state
         function updateGame() {
-            if (!diceRolled) return; // Only update if dice has been rolled
-
+            if (!diceRolled) return;
+            
             const diceResult = rollDice();
             document.getElementById('dice').style.backgroundColor = diceResult;
             document.getElementById('dice').innerHTML = diceResult === 'orange' ? '🟠 50¢' : '🟡 50¢';
-
-            // Disable further rolling until allocation is made
             document.getElementById('roll-dice').disabled = true;
         }
 
-        // Handle dice roll button click
         document.getElementById('roll-dice').addEventListener('click', function() {
             if (roundsLeft > 0 && !diceRolled) {
                 diceRolled = true;
-                updateGame(); // Show the color
+                updateGame();
             }
         });
 
-        // Function to reset the dice after allocation
         function resetDice() {
             document.getElementById('dice').style.backgroundColor = "transparent";
             document.getElementById('dice').innerHTML = "50¢";
@@ -125,42 +118,25 @@
             diceRolled = false;
         }
 
-        // Handle allocation for Huskies
-        document.getElementById('huskies').addEventListener('click', function() {
-            if (!diceRolled) return; // Ensure dice has been rolled first
-
+        function allocateMoney() {
+            if (!diceRolled) return;
+            
             score += 1;
             roundsLeft--;
-            document.getElementById('score').innerHTML = "Your Score: " + score;
-            document.getElementById('rounds-left').innerHTML = "Rounds Left: " + roundsLeft;
+            moneyLeft -= 0.50;
+            document.getElementById('money-left').innerHTML = "Money Left: $" + moneyLeft.toFixed(2);
             
             if (roundsLeft <= 0) {
-                document.getElementById('score').innerHTML = "Game Over! Final Score: " + score;
-                document.getElementById('rounds-left').innerHTML = "Rounds Left: 0";
+                document.getElementById('score').innerHTML = "Final Score: " + score;
+                document.getElementById('score').style.display = "block";
                 document.getElementById('roll-dice').disabled = true;
             } else {
-                resetDice(); // Reset for next round
+                resetDice();
             }
-        });
+        }
 
-        // Handle allocation for Self
-        document.getElementById('self').addEventListener('click', function() {
-            if (!diceRolled) return; // Ensure dice has been rolled first
-
-            score += 1;
-            roundsLeft--;
-            document.getElementById('score').innerHTML = "Your Score: " + score;
-            document.getElementById('rounds-left').innerHTML = "Rounds Left: " + roundsLeft;
-            
-            if (roundsLeft <= 0) {
-                document.getElementById('score').innerHTML = "Game Over! Final Score: " + score;
-                document.getElementById('rounds-left').innerHTML = "Rounds Left: 0";
-                document.getElementById('roll-dice').disabled = true;
-            } else {
-                resetDice(); // Reset for next round
-            }
-        });
-
+        document.getElementById('huskies').addEventListener('click', allocateMoney);
+        document.getElementById('self').addEventListener('click', allocateMoney);
     </script>
 
 </body>
