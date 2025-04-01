@@ -61,7 +61,11 @@
     <p>Choose where to allocate money: Huskies in Stamford or Self. You get money depending on the dice roll.</p>
     
     <div class="dice" id="dice">🎲</div>
-    
+
+    <!-- Roll Dice Button -->
+    <button class="button" id="roll-dice">Roll Dice</button>
+
+    <!-- Allocation boxes -->
     <div id="huskies" class="allocation-box huskies">
         <div class="box-title">Huskies in Stamford</div>
         <p>Click to allocate to Huskies</p>
@@ -71,7 +75,8 @@
         <div class="box-title">Self</div>
         <p>Click to keep for yourself</p>
     </div>
-    
+
+    <!-- Game result display -->
     <div class="result">
         <p id="score">Your Score: 0</p>
         <p id="rounds-left">Rounds Left: 30</p>
@@ -80,8 +85,6 @@
     <script>
         let score = 0;
         let roundsLeft = 30;
-        let totalRounds = 30;
-        let selectedGroup = '';  // To track the group selected for allocation
 
         // Randomize the dice result (orange or yellow)
         function rollDice() {
@@ -93,18 +96,23 @@
             const diceResult = rollDice();
             document.getElementById('dice').innerHTML = diceResult === 'orange' ? '🟠' : '🟡';
 
-            // Disable buttons initially and enable after the dice roll
-            document.getElementById('huskies').disabled = false;
-            document.getElementById('self').disabled = false;
-
             // If rounds left is 0, stop the game
             if (roundsLeft <= 0) {
                 document.getElementById('score').innerHTML = "Game Over! Final Score: " + score;
                 document.getElementById('rounds-left').innerHTML = "Rounds Left: 0";
                 document.getElementById('huskies').disabled = true;
                 document.getElementById('self').disabled = true;
+            } else {
+                document.getElementById('rounds-left').innerHTML = "Rounds Left: " + roundsLeft;
             }
         }
+
+        // Handle the dice roll button click
+        document.getElementById('roll-dice').addEventListener('click', function() {
+            if (roundsLeft > 0) {
+                updateGame(); // Update the dice result when button is clicked
+            }
+        });
 
         // Handle Huskies box allocation
         document.getElementById('huskies').addEventListener('click', function() {
