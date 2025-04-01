@@ -37,21 +37,22 @@
             width: 200px;
             height: 150px;
             margin: 20px;
-            border: 2px solid black;
-            border-radius: 10px;
             padding: 10px;
             text-align: center;
             cursor: pointer;
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: transparent; /* Make background transparent */
         }
         .box-title {
             font-size: 20px;
             font-weight: bold;
         }
         .huskies {
-            background-color: #FF5733;
+            border-color: #FF5733; /* Orange border for Huskies */
         }
         .self {
-            background-color: #FFD700;
+            border-color: #FFD700; /* Yellow border for Self */
         }
     </style>
 </head>
@@ -60,10 +61,11 @@
     <h1>Random Allocation Game</h1>
     <p>Choose where to allocate money: Huskies in Stamford or Self. You get money depending on the dice roll.</p>
     
-    <div class="dice" id="dice">🎲</div>
-
     <!-- Roll Dice Button -->
-    <button class="button" id="roll-dice">Roll Dice</button>
+    <button class="button" id="roll-dice">Roll the Dice</button>
+
+    <!-- Dice Result -->
+    <div class="dice" id="dice">🎲 50¢</div>
 
     <!-- Allocation boxes -->
     <div id="huskies" class="allocation-box huskies">
@@ -94,7 +96,9 @@
         // Update the displayed dice color and score
         function updateGame() {
             const diceResult = rollDice();
-            document.getElementById('dice').innerHTML = diceResult === 'orange' ? '🟠' : '🟡';
+            document.getElementById('dice').innerHTML = diceResult === 'orange' 
+                ? '🟠 50¢'  // Orange dice with 50¢ text
+                : '🟡 50¢';  // Yellow dice with 50¢ text
 
             // If rounds left is 0, stop the game
             if (roundsLeft <= 0) {
@@ -116,9 +120,9 @@
 
         // Handle Huskies box allocation
         document.getElementById('huskies').addEventListener('click', function() {
-            if (document.getElementById('dice').innerHTML === '🟠') {
+            if (document.getElementById('dice').innerHTML.includes('🟠')) {
                 score += 1;  // Allocate for Huskies when orange
-            } else if (document.getElementById('dice').innerHTML === '🟡') {
+            } else if (document.getElementById('dice').innerHTML.includes('🟡')) {
                 score += 1;  // Allocate for Huskies when yellow
             }
             roundsLeft--;
@@ -127,9 +131,9 @@
 
         // Handle Self box allocation
         document.getElementById('self').addEventListener('click', function() {
-            if (document.getElementById('dice').innerHTML === '🟠') {
+            if (document.getElementById('dice').innerHTML.includes('🟠')) {
                 score += 1;  // Keep for self when orange
-            } else if (document.getElementById('dice').innerHTML === '🟡') {
+            } else if (document.getElementById('dice').innerHTML.includes('🟡')) {
                 score += 1;  // Keep for self when yellow
             }
             roundsLeft--;
