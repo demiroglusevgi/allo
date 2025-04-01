@@ -18,18 +18,20 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
-            margin: 10px;
+            margin: 20px; /* Increased margin for spacing */
         }
         .button:hover {
             background-color: #45a049;
         }
         .dice {
-            font-size: 100px;
-            margin: 20px auto;
-            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 40px auto; /* Increased margin for more space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 120px;
             height: 120px;
-            line-height: 120px;
             border-radius: 50%;
             border: 2px solid black;
             text-align: center;
@@ -65,7 +67,10 @@
 </head>
 <body>
     <h1>Random Allocation Game</h1>
-    <p>Click "Roll the Die" to reveal a color, then choose where to allocate the money.</p>
+     <p>You have two boxes in front of you: one belongs to Syracuse Orange Men and one belongs to a random person from UConn Huskies Men. You roll a die 30 times and each die roll will tell you how to assign one 50 cent coin; each time you roll the die, you will put 50 cents in one of the two cups in front of you. After you finish today’s activities, we will deliver this cup of money to a person randomly selected from UConn Huskies Men and one randomly selected person from Syracuse Orange Men You will not be informed about who will receive the money and the persons who receive the money will not know about you.
+        
+        Pick a color, "yellow" or "orange" for yourself. If the die shows your color, put the money in your own box by clicking it. If the other color shows up, you will put the money in "Huskies in Stamford" box. 
+        Click "Roll the Die" to reveal a color, then choose where to allocate the money.</p>  
     
     <!-- Dice Result (Initially transparent with "50¢") -->
     <div class="dice" id="dice">50¢</div>
@@ -103,7 +108,8 @@
             if (!dieRolled) return;
             const dieResult = rollDie();
             document.getElementById('dice').style.backgroundColor = dieResult;
-            document.getElementById('dice').innerHTML = dieResult === 'orange' ? '🟠 50¢' : '🟡 50¢';
+            document.getElementById('dice').style.color = "black";
+            document.getElementById('dice').innerHTML = "50¢";
             document.getElementById('roll-die').disabled = true;
         }
 
